@@ -1,3 +1,3 @@
-start mongo db:
-cd C:\\ProgramFiles\mongodb\server\5.0\bin
-mongod
+## Server for mobile-PWA
+
+This is server for [mobile-pwa-cinema](https://github.com/exceedstb/mobile-pwa-cinema)
