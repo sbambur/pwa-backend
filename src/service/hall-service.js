@@ -1,11 +1,11 @@
-const HallModel = require("../models/hall-model");
+import HallModel from "../models/hall-model.js";
 
 class HallService {
   getAll() {
     return HallModel.find();
   }
 
-  async getOne(id) {
+  getOne(id) {
     if (!id) {
       throw new Error("id не указан");
     }
@@ -13,11 +13,11 @@ class HallService {
   }
 
   update(hall) {
-    if (!hall._id) {
+    if (!hall.id) {
       throw new Error("id не указан");
     }
-    return HallModel.findByIdAndUpdate(hall._id, hall, { new: true });
+    return HallModel.findByIdAndUpdate(hall.id, hall, { new: true });
   }
 }
 
-module.exports = new HallService();
+export default new HallService();

@@ -1,6 +1,6 @@
-const ApiError = require("../exeptions/api-error");
+import { ApiError } from "../exeptions/api-error.js";
 
-module.exports = function (err, req, res, next) {
+const errorMiddleware = (err, req, res, next) => {
   console.log(err);
   if (err instanceof ApiError) {
     return res
@@ -10,3 +10,5 @@ module.exports = function (err, req, res, next) {
 
   return res.status(500).json({ message: "Произошла непридведенная ошибка" });
 };
+
+export default errorMiddleware;
