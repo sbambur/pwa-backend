@@ -1,10 +1,10 @@
-const Router = require("express").Router;
-const UserController = require("../controllers/user-controller");
-const HallController = require("../controllers/hall-controllers");
-const router = new Router();
+import { Router } from "express";
+import UserController from "../controllers/user-controller.js";
+import HallController from "../controllers/hall-controllers.js";
+import { body } from "express-validator";
+import authMiddleware from "../middlewares/auth-middleware.js";
 
-const { body } = require("express-validator");
-const authMiddleware = require("../middlewares/auth-middleware");
+const router = new Router();
 
 router.post(
   "/registration",
@@ -22,4 +22,4 @@ router.get("/halls", authMiddleware, HallController.getAll);
 router.get("/halls/:id", authMiddleware, HallController.getOne);
 router.put("/halls", authMiddleware, HallController.update);
 
-module.exports = router;
+export default router;

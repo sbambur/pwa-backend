@@ -1,11 +1,10 @@
-const UserModel = require("../models/user-model");
-const bcrypt = require("bcrypt");
-const uuid = require("uuid");
+import UserModel from "../models/user-model.js";
+import bcrypt from "bcrypt";
+import { v4 as uuid } from "uuid";
 // const mailServise = require("./mail-service");
-const tokenService = require("./token-service");
-const UserDto = require("../dtos/user-dto");
-const ApiError = require("../exeptions/api-error");
-const { validateRefreshToken } = require("./token-service");
+import TokenService from "./token-service.js";
+import { UserDto } from "../dtos/user-dto.js";
+import { ApiError } from "../exeptions/api-error.js";
 
 class UserService {
   async registration(email, password) {
@@ -28,8 +27,8 @@ class UserService {
     // await mailServise.sendActivationMail(email, `${process.env.API_URL}/api/activate/${activationLink}`);
 
     const userDto = new UserDto(user);
-    const tokens = tokenService.generatePairOfTokens({ ...userDto });
-    await tokenService.saveToken(userDto.ud, tokens.refreshToken);
+    const tokens = TokenService.generatePairOfTokens({ ...userDto });
+    await TokenService.saveToken(userDto.id, tokens.refreshToken);
 
     return {
       ...tokens,
@@ -57,8 +56,8 @@ class UserService {
     }
 
     const userDto = new UserDto(user);
-    const tokens = tokenService.generatePairOfTokens({ ...userDto });
-    await tokenService.saveToken(userDto.ud, tokens.refreshToken);
+    const tokens = TokenService.generatePairOfTokens({ ...userDto });
+    await TokenService.saveToken(userDto.id, tokens.refreshToken);
     return {
       ...tokens,
       user: userDto,
@@ -66,7 +65,7 @@ class UserService {
   }
 
   async logout(refreshToken) {
-    const token = await tokenService.removeToken(refreshToken);
+    const token = await TokenService.removeToken(refreshToken);
     return token;
   }
 
@@ -74,15 +73,15 @@ class UserService {
     if (!refreshToken) {
       throw ApiError.UnautorizedError();
     }
-    const userData = await validateRefreshToken(refreshToken);
-    const tokenFromDb = await tokenService.findToken(refreshToken);
+    const userData = await TokenService.validateRefreshToken(refreshToken);
+    const tokenFromDb = await TokenService.findToken(refreshToken);
     if (!userData || !tokenFromDb) {
       throw ApiError.UnautorizedError();
     }
     const user = await UserModel.findById(userData.id);
     const userDto = new UserDto(user);
-    const tokens = tokenService.generatePairOfTokens({ ...userDto });
-    await tokenService.saveToken(userDto.ud, tokens.refreshToken);
+    const tokens = TokenService.generatePairOfTokens({ ...userDto });
+    await TokenService.saveToken(userDto.id, tokens.refreshToken);
     return {
       ...tokens,
       user: userDto,
@@ -95,4 +94,4 @@ class UserService {
   }
 }
 
-module.exports = new UserService();
+export default new UserService();

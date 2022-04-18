@@ -1,4 +1,6 @@
-const { Schema, model } = require("mongoose");
+import mongoose from "mongoose";
+import normalize from "normalize-mongoose";
+const { Schema, model } = mongoose;
 
 const Seat = new Schema({
   seatNumber: { type: Number, required: true },
@@ -14,15 +16,20 @@ const Seat = new Schema({
   },
 });
 
+Seat.plugin(normalize);
+
 const Hall = new Schema({
   title: { type: String, required: true },
   reserved: { type: Boolean, required: true },
   active: { type: Boolean, required: true },
   date: Date,
   movie: {
-    id: String,
+    id: Number,
     title: String,
+    runtime: Number,
+    vote_average: Number,
     overview: String,
+    genres: Array,
     release_date: String,
     poster_path: String,
     backdrop_path: String,
@@ -30,4 +37,6 @@ const Hall = new Schema({
   seats: [Seat],
 });
 
-module.exports = model("Hall", Hall);
+Hall.plugin(normalize);
+
+export default model("Hall", Hall);

@@ -1,7 +1,7 @@
-const ApiError = require("../exeptions/api-error");
-const tokenService = require("../service/token-service");
+import { ApiError } from "../exeptions/api-error.js";
+import TokenService from "../service/token-service.js";
 
-module.exports = function (req, res, next) {
+const authMiddleware = (req, res, next) => {
   try {
     const authorizationHeader = req.headers.authorization;
     if (!authorizationHeader) {
@@ -13,7 +13,7 @@ module.exports = function (req, res, next) {
       return next(ApiError.UnautorizedError());
     }
 
-    const userData = tokenService.validateAccessToken(accessToken);
+    const userData = TokenService.validateAccessToken(accessToken);
     if (!userData) {
       return next(ApiError.UnautorizedError());
     }
@@ -24,3 +24,5 @@ module.exports = function (req, res, next) {
     return next(ApiError.UnautorizedError());
   }
 };
+
+export default authMiddleware;

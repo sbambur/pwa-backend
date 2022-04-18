@@ -1,4 +1,4 @@
-const HallService = require("../service/hall-service");
+import HallService from "../service/hall-service.js";
 
 class HallController {
   async getAll(_, res) {
@@ -29,4 +29,4 @@ class HallController {
   }
 }
 
-module.exports = new HallController();
+export default new HallController();
