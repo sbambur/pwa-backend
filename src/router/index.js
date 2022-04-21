@@ -1,6 +1,6 @@
 import { Router } from "express";
 import UserController from "../controllers/user-controller.js";
-import HallController from "../controllers/hall-controllers.js";
+import SessionController from "../controllers/session-controllers.js";
 import TicketController from "../controllers/ticket-controller.js";
 import { body } from "express-validator";
 import authMiddleware from "../middlewares/auth-middleware.js";
@@ -19,9 +19,8 @@ router.get("/active/:link", UserController.activate);
 router.get("/refresh", UserController.refresh);
 router.get("/users", authMiddleware, UserController.getUsers);
 
-router.get("/halls", authMiddleware, HallController.getAll);
-router.get("/halls/:id", authMiddleware, HallController.getOne);
-router.put("/halls", authMiddleware, HallController.update);
+router.get("/sessions", authMiddleware, SessionController.getAll);
+router.get("/sessions/:id", authMiddleware, SessionController.getOne);
 
 router.get("/tickets/:id", TicketController.getAll);
 router.post("/tickets", TicketController.create);

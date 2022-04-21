@@ -4,7 +4,7 @@ const { Schema, model } = mongoose;
 
 const Ticket = new Schema({
   user: { type: Schema.Types.ObjectId, ref: "User" },
-  hall: { type: Schema.Types.ObjectId, ref: "Hall" },
+  session: { type: Schema.Types.ObjectId, ref: "Session" },
   seat: String,
   seatNumber: Number,
   price: Number,
